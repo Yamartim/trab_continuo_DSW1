@@ -25,8 +25,8 @@ public class PrestadorDAO extends GenericDAO {
             statement.setString(2, prestador.getSenha());
             statement.setString(3, prestador.getNome());
             statement.setString(4, prestador.getCPF());
-            statement.setString(7, prestador.getArea());
-            statement.setString(8, prestador.getEspecialidade());
+            statement.setString(5, prestador.getArea());
+            statement.setString(6, prestador.getEspecialidade());
             statement.executeUpdate();
 
             statement.close();

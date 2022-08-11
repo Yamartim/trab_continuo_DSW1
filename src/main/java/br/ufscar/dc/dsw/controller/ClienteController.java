@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import br.ufscar.dc.dsw.dao.ClienteDAO;
 import br.ufscar.dc.dsw.domain.Cliente;
-import br.ufscar.dc.dsw.domain.Livro;
 import br.ufscar.dc.dsw.domain.Prestador;
 
 
@@ -20,7 +19,7 @@ import br.ufscar.dc.dsw.domain.Prestador;
 public class ClienteController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
-    
+
     private ClienteDAO dao;
     
     public void init() {

@@ -15,6 +15,6 @@ abstract public class GenericDAO {
     }
 
     protected Connection getConnection() throws SQLException {
-    	return DriverManager.getConnection("jdbc:mysql://localhost:3306/Login", "root", "rafael98");
+    	return DriverManager.getConnection("jdbc:mysql://localhost:3306/Login", "root", "sonasenha");
     }
 }
