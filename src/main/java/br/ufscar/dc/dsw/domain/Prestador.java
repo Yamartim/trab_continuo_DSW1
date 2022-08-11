@@ -6,8 +6,8 @@ public class Prestador extends BaseUser{
     private String especialidade;
     //????????? curriculo em PDF;
 	
-    public Prestador(Long id, String email, String senha, String nome, String cPF, String area, String especialidade) {
-		super(id, email, senha, nome, cPF);
+    public Prestador(Long id, String email, String senha, String nome, String CPF, String area, String especialidade) {
+		super(id, email, senha, nome, CPF);
 		this.area = area;
 		this.especialidade = especialidade;
 	}
@@ -16,6 +16,7 @@ public class Prestador extends BaseUser{
 		return area;
 	}
 	
+	@SuppressWarnings("unused")
 	private void setArea(String area) {
 		this.area = area;
 	}
@@ -23,6 +24,7 @@ public class Prestador extends BaseUser{
 	public String getEspecialidade() {
 		return especialidade;
 	}
+	@SuppressWarnings("unused")
 	private void setEspecialidade(String especialidade) {
 		this.especialidade = especialidade;
 	}    
