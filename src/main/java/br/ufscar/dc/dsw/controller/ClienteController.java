@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import br.ufscar.dc.dsw.dao.ClienteDAO;
+import br.ufscar.dc.dsw.dao.ConsultaDAO;
 import br.ufscar.dc.dsw.domain.Cliente;
+import br.ufscar.dc.dsw.domain.Consulta;
 
 
 @WebServlet(urlPatterns = "/cliente/*")
@@ -19,10 +21,13 @@ public class ClienteController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     
-    private ClienteDAO dao;
+    public ClienteDAO dao;
+    public ConsultaDAO daoconsulta;
     
     public void init() {
         dao = new ClienteDAO();
+        daoconsulta = new ConsultaDAO();
+        
     }
 
     @Override
@@ -177,6 +182,11 @@ public class ClienteController extends HttpServlet {
     	if (usuario == null) {
     		response.sendRedirect(request.getContextPath());
     	} else if (usuario.getAdm()== 0) {
+    		
+    		List<Consulta> listaConsulta = daoconsulta.getAllbyCliente(usuario.getId());
+    		
+    		request.setAttribute("listaConsulta", listaConsulta);
+    		
     		RequestDispatcher dispatcher = request.getRequestDispatcher("/logado/cliente/index.jsp");
             dispatcher.forward(request, response);
     	} else {

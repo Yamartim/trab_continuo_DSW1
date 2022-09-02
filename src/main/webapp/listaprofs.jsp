@@ -13,7 +13,14 @@
 	<header class="cabecalho">
 		<h3 class="cabecalho__titulo">LifeCare</h3>
 		<h4>Nossos Profissionais</h4>
-		<a class="cabecalho__link" href="${pageContext.request.contextPath}/">Voltar</a>
+		<c:choose>
+			<c:when test="${sessionScope.usuarioLogado.adm != null}">
+				<a class="cabecalho__link" href="/<%= contextPath%>/cliente/login">Voltar</a>
+			</c:when>
+			<c:otherwise>
+				<a class="cabecalho__link" href="/<%= contextPath%>/">Voltar</a>
+			</c:otherwise>
+		</c:choose>
 	</header>
 	<div class="corpo">
 		<section class="conteudo">
@@ -56,7 +63,9 @@
 						<td>${prestador.CPF}</td>
 						<td>${prestador.area}</td>
 						<td>${prestador.especialidade}</td>
-						<td><a class="botao-primario" href="#">Agendar</a>
+						<c:if test="${sessionScope.usuarioLogado.adm != null}">
+							<td><a class="botao-primario" href="/<%= contextPath%>/consulta/agendar?idcliente=${sessionScope.usuarioLogado.id}&idprestador=${prestador.id}">Agendar</a>
+						</c:if>
 					</tr>
 
 				</c:forEach>

@@ -65,9 +65,6 @@ public class PrestadorController extends HttpServlet {
 			case "/listagem":
 				listaPrestadores(request, response);
 				break;
-			case "/filtragem":
-				//filtraPrestadores(request, response);
-				break;
 			default:
 				login(request, response);
 				break;
