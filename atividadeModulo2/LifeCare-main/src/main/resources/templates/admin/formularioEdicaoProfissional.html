@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="#{cadastro.title}"> | Excellent Voyage</title>
+    <link rel="stylesheet" th:href="@{/styles/global.css}" />
+    <link rel="stylesheet" th:href="@{/styles/cadastro-profissional.css}" />
+    <!-- script para verificar se ja tem usuario logado-->
+</head>
+<body>
+    <div class="cadastro-cliente-container box">
+        <a class="botao-voltar" href="javascript:history.go(-1)"><img th:src="@{/image/icons/arrow-left.svg}" /><p th:text="#{cadastro.voltar}"><p></a>
+        <!-- apresentava erros no scopo
+            <div th:if="${result != null} ? ${result.hasErrors()} : false">
+            <div class="form-erro">
+                <ul th:each="erro : ${result.getFieldErrors()}">
+                    
+                    <li th:text="${erro.getField()} + ': ' + ${erro.getDefaultMessage()}"></li>
+                </ul>
+            </div>
+        </div>
+        -->
+        <form class="form-cadastro-cliente" th:action="@{/profissional/editar}" th:object="${profissional}" method="POST" >
+            <h1 th:text="#{cadastro.title}"></h1>
+            <div class="campos">
+                <div class="campo-container">
+                    <label for="nome" th:text="#{cadastro.nome}"></label>
+                    <input class="campo" id="nome" name="nome" type="text" th:field="*{nome}"/>
+                    
+                    <div class="field-erro">
+                        <span th:errors="*{nome}"></span>
+                    </div>
+                </div>
+                <div class="campo-container">
+                    <label for="email" th:text="#{cadastro.email}"></label>
+                    <input class="campo" id="email" name="email" type="email" th:field="*{email}"/>
+
+                    <div class="field-erro">
+                        <span th:errors="*{email}"></span>
+                    </div>
+                </div>
+                <div class="campo-container">
+                    <label for="cnpj" th:text="#{cadastro.cnpj}"></label>
+                    <input class="campo" id="cnpj" name="cnpj" type="text" th:field="*{cnpj}"/>
+                    <!--precisa implementar mascara de cnpj-->
+                    
+                    <div class="field-erro">
+                        <span th:errors="*{cnpj}"></span>
+                    </div>
+                </div>
+                <div class="campo-container">
+                    <label for="senha" th:text="#{cadastro.senha}"></label>
+                    <input class="campo" id="senha" name="senha" type="password"/>
+                    
+                    <div class="field-erro">
+                        <span th:errors="*{senha}"></span>
+                    </div>
+                </div>
+                <div class="campo-container">
+                    <label for="descricao" th:text="#{cadastro.descricao}"></label>
+                    <textarea class="campo" id="descricao" name="descricao" type="text" th:field="*{descricao}"></textarea>
+                                        
+                    <div class="field-erro">
+                        <span th:errors="*{descricao}"></span>
+                    </div>
+                </div>
+                <div class="campo-container">
+                    <label for="confirmarSenha" th:text="#{cadastro.confirmaSenha}"></label>
+                    <input class="campo" id="confirmarSenha" name="confirmarSenha" type="password"/>
+                    <!-- precissa implementar erro de confirmar senha-->
+                    <div class="field-erro">
+                        <span th:text="${confirmarSenhaErro}"></span>
+                    </div>
+                </div>
+                <div class="campo-container">
+                    <label for="id">ID</label>
+                    <input class="campo" id="id" name="id" type="text" readonly="readonly" th:field="*{id}"/>
+                </div>
+                <input type="hidden" id="id" th:field="*{tipo}" />
+            </div>
+            <input class="submit" type="submit" name="bOK" th:value="#{cadastro.cadastrar}" />
+        </form>
+    </div>
+
+
+</body>
+</html>

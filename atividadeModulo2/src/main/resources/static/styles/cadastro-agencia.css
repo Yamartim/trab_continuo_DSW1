@@ -1,0 +1,88 @@
+.cadastro-cliente-container {
+    position: relative;
+
+    padding: 115px 0 80px;
+
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.form-cadastro-cliente {
+    padding: 30px 70px 54px;
+
+    width: 100%;
+    max-width: 1187px;
+
+    background: var(--white);
+
+    border-radius: 50px;
+
+    box-shadow: var(--shadow);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.form-cadastro-cliente h1 {
+    margin-bottom: 40px;
+
+    font-size: 48px;
+    font-weight: 400;
+    text-align: center;
+
+    color: var(--black)
+}
+
+.form-cadastro-cliente .campos {
+    margin-bottom: 30px;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 40px;
+    row-gap: 7px;
+}
+
+.form-cadastro-cliente .campos .campo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.form-cadastro-cliente .campos .campo-container label {
+    margin-bottom: 4px;
+
+    font-size: 30px;
+}
+
+.form-cadastro-cliente .campos .campo-container .campo {
+    padding: 0 20px;
+
+    width: 100%;
+    height: 70px;
+}
+
+.form-cadastro-cliente .submit {
+    width: 214px;
+    height: 64px;
+
+    font-size: 36px;
+    font-weight: 500;
+
+    color: var(--white);
+
+    background: var(--degrade);
+
+    border: 0;
+    border-radius: 15px;
+
+    box-shadow: var(--shadow);
+
+    align-self: flex-end;
+
+    transition: all 0.2s;
+}
+
+.form-cadastro-cliente .submit:hover {
+    opacity: 0.8;
+}

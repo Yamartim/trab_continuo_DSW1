@@ -1,0 +1,16 @@
+@import url("./components/navbar.css");
+@import url("./components/listaPacotes.css");
+@import url("./components/perfil-agencia.css");
+@import url("./components/perfil-admin.css");
+
+.perfil-container {
+    padding-bottom: 80px;
+}
+
+.texto-inicio{
+    margin: 54px 0;
+}
+
+.texto-inicio p{
+    font-size: 24px;
+}

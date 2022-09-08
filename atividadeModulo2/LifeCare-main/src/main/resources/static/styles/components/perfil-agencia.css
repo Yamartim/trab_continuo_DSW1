@@ -1,0 +1,46 @@
+.header-container {
+  display: flex;
+  align-items: center;
+}
+
+.botao-pacotesvigentes{
+  font-size: 24px;
+  background: none !important;
+  border: none !important;
+  color: var(--primary);
+  margin-bottom: 54px;
+  display: block;
+}
+
+.botao-pacotesvigentes:hover{
+  text-decoration: underline !important;
+}
+
+.botao-adicionarpacote{
+  width: 320px;
+  height: 60px;
+
+  font-size: 32px;
+
+  color: var(--white);
+
+  background: var(--degrade);
+
+  border: 0;
+
+  border-radius: 15px;
+
+  box-shadow: var(--shadow);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left:38%;
+
+  transition: all 0.2s;
+}
+
+.botao-adicionarpacote:hover {
+  opacity: 0.8;
+}

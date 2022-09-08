@@ -1,0 +1,109 @@
+.lista-profissionais {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 41px;
+}
+
+.profissional {
+  width: 297px;
+
+  background: var(--white);
+
+  border-radius: 10px;
+  
+  box-shadow: var(--shadow);
+
+  overflow: hidden;
+}
+
+.profissional .profissional-image {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  width: 100%;
+  height: 221px;
+}
+
+.profissional .profissional-content {
+  width: 100%;
+  height: 100px;
+
+  padding: 0 17px 17px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profissional .profissional-content .profissional-dados strong {
+  margin-bottom: 4px;
+
+  font-size: 21px;
+  font-weight: 500;
+
+  display: block;
+}
+
+.profissional .profissional-content .profissional-dados p {
+  font-size: 16px;
+}
+
+.profissional .profissional-content .profissional-compra {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.profissional .profissional-content .profissional-compra span{
+  margin-bottom: 10px;
+
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.profissional .profissional-content .profissional-compra a{
+  width: 122px;
+  height: 38px;
+
+  font-size: 21px;
+
+  color: var(--white);
+
+  background: var(--degrade);
+
+  border-radius: 5px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.2s;
+}
+
+.profissional .profissional-content .profissional-compra a:hover{
+  opacity: 0.8;
+}
+
+.profissional .profissional-content .profissional-ver {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.profissional .profissional-content .profissional-ver a{
+  width: 122px;
+  height: 38px;
+
+  font-size: 21px;
+
+  color: var(--primary);
+
+  display: flex;
+  align-items:flex-end;
+  justify-content: flex-end;
+}
+
+.profissional .profissional-content .profissional-ver a:hover{
+  text-decoration: underline !important;
+}

@@ -1,0 +1,105 @@
+.pacote-container{
+  display: flex;
+  align-items: initial;
+  justify-content: initial;
+  margin-top: 50px;
+}
+
+.lista-fotos{
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 41px;
+  justify-content: start;
+}
+
+.foto{
+  width: 450px;
+  height: 450px;
+  background-color: white;
+  border-radius: 15px;
+
+  overflow: hidden;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  margin: 0px 50px 0px 0px !important;
+}
+
+.informacoes-pacote{
+  width: 100%;
+  height: 100%;
+  padding: 35px;
+  background: var(--white);
+
+  border-radius: 15px;
+  
+  box-shadow: var(--shadow);
+
+  overflow: hidden;
+
+  display: flex;
+
+  justify-content: space-between;
+}
+
+.informacoes-pacote .pacote-infos h1{
+  font-size: 60px;
+  color: var(--primary);
+}
+
+.informacoes-pacote .pacote-infos h2{
+  font-weight: normal;
+  margin-bottom: 20px;
+}
+
+.informacoes-pacote .pacote-infos p{
+  font-weight:bold;
+  font-size: 20px;
+}
+
+.informacoes-pacote .pacote-infos h3{
+  font-weight: normal;
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.informacoes-pacote .pacote-infos #pacote-preco{
+  font-weight: bold;
+  color: var(--secundary);
+  font-size: 45px;
+  margin-bottom: 70px;
+}
+.informacoes-pacote .pacote-infos #info-adicionais{
+  color: #9B9B9B;
+}
+
+.informacoes-pacote .pacote-infos .pacote-compra{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.informacoes-pacote .pacote-compra a{
+  width: 250px;
+  height: 80px;
+
+  font-size: 40px;
+
+  color: var(--white);
+
+  background: var(--degrade);
+
+  border: 0;
+  border-radius: 15px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition: all 0.2s;
+}
+
+.informacoes-pacote .pacote-compra a:hover{
+  opacity: 0.8;
+}

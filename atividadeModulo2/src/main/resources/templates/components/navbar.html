@@ -1,0 +1,18 @@
+<nav class="navbar-container">
+    <a th:href="@{/}"><span class="logo">LIFE CARE</span></a>
+    <div class="right-side" sec:authorize="isAuthenticated()">
+        <a th:href="@{/perfil}" class="botao-logado">
+            <img th:src="@{/image/icons/pessoa.png}"/> <p th:text="${#authorization.getAuthentication().getPrincipal().getUsuario().getNome()}">Bob</p>
+        </a>
+        <a href="javascript: document.logoutForm.submit()" class="botao-logado">
+            <img th:src="@{/image/icons/exit.svg}"/> <p th:text="#{nav.sair}"></p>
+        </a>
+        <form name="logoutForm" th:action="@{/logout}" method="post" th:hidden="true">
+            <input hidden type="submit" value="Sign Out"/>
+        </form> 
+    </div>
+    <div class="right-side" sec:authorize="!isAuthenticated()">
+        <a th:href="@{/login}" class="botao-login" th:text="#{nav.login}"></a>
+        <a th:href="@{/cadastro}" class="botao-cadastro" th:text="#{nav.cadastro}"></a>
+    </div>
+</nav>

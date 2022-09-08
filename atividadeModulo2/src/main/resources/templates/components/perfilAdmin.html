@@ -1,0 +1,65 @@
+<main>
+    <div class="texto-inicio">
+        <h1>
+          <span th:text="#{profissional.saudacao}"></span>
+          <span th:text="${#authorization.getAuthentication().getPrincipal().getUsuario().getNome()}"></span>
+          
+        </h1>
+    </div>
+
+    <div>
+		<table>
+			<caption th:text="#{admin.listaClientes}"></caption>
+			<tr>
+				<th>ID</th>
+				<th th:text="#{cadastro.nome}"></th>
+				<th th:text="#{cadastro.cpf}"></th>
+				<th th:text="#{cadastro.email}"></th>
+				<th th:text="#{cadastro.sexo}"></th>
+				<th th:text="#{cadastro.telefone}"></th>
+				<th th:text="#{cadastro.nascimento}"></th>
+				<th th:text="#{admin.editar}"></th>
+				<th th:text="#{admin.remover}"></th>
+
+			</tr>
+
+				<tr th:each=" Cliente : ${listaCliente}">
+					<td th:text="${Cliente.id}"></td>
+					<td th:text="${Cliente.nome}"></td>
+					<td th:text="${Cliente.cpf}"></td>
+					<td th:text="${Cliente.email}"></td>
+					<td th:text="${Cliente.sexo}"></td>
+					<td th:text="${Cliente.telefone}"></td>
+                    <td th:text="${#calendars.format(Cliente.dataNascimento, 'dd/MM/yyyy')}"></td>
+					<td><a th:href="@{/cliente/editar/{id} (id=${Cliente.id}) }" th:text="#{admin.editar}"></a></td>
+					<td><a th:href="@{/cliente/delete/{id} (id=${Cliente.id}) }"
+						onclick="return confirm('Tem certeza de que deseja excluir este usuário? todas as compras deste usuário serão excluidas');" th:text="#{admin.remover}"></a></td>
+			    </tr>
+		</table>
+	</div>
+
+    <div>
+        <table>
+			<caption style="margin-top: 30px;" th:text="#{admin.listaProfissionals}"></caption>
+			<tr>
+				<th>ID</th>
+                <th th:text="#{cadastro.nome}"></th>
+				<th th:text="#{cadastro.cnpj}"></th>
+				<th th:text="#{cadastro.email}"></th>
+				<th th:text="#{admin.editar}"></th>
+				<th th:text="#{admin.remover}"></th>
+			</tr>
+
+				<tr th:each=" Profissional : ${listaProfissional}">
+                    <td th:text="${Profissional.id}"></td>
+					<td th:text="${Profissional.nome}"></td>
+					<td th:text="${Profissional.cnpj}"></td>
+					<td th:text="${Profissional.email}"></td>
+                    <td><a th:href="@{/profissional/editar/{id} (id=${Profissional.id}) }" th:text="#{admin.editar}"></a></td>
+                    <td><a th:href="@{/profissional/delete/{id} (id=${Profissional.id}) }"
+						onclick="return confirm('Tem certeza de que deseja excluir este usuário? todas os pacotes turisticos desta profissional serão excluidos');"  th:text="#{admin.remover}"></a></td>
+			    </tr>
+			</c:forEach>
+		</table>
+	</div>
+</main>
