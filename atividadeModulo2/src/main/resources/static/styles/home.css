@@ -1,6 +1,11 @@
 @import url("./components/navbar.css");
 @import url("./components/listaProfissionais.css");
 
+.profissionais-container {
+    width: 90%;
+    margin: auto;
+}
+
 .home-container {
     padding-bottom: 80px;
 }

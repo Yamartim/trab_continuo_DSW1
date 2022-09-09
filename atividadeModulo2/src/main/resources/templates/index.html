@@ -1,23 +1,25 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="#{index.title}"> | Excellent Voyage</title>
+    <title th:text="#{index.title}"> | Life Care</title>
     <link rel="stylesheet" th:href="@{/styles/global.css}" />
     <link rel="stylesheet" th:href="@{/styles/home.css}" />
 </head>
+
 <body>
     <div class="home-container box">
         <div th:insert="components/navbar.html"></div>
         <main>
             <div class="hero-container">
                 <p th:text="#{index.text}"></p>
-                <img th:src="@{/image/hero.png}" />
+                <img th:src="@{/image/profissionais.jpg}" />
             </div>
-            <div class="pacotes-container">
+            <div class="profissionais-container">
                 <form id="form" class="filtro" th:action="@{/buscar}" method="GET">
-                   <div class="campo-container">
+                    <div class="campo-container">
                         <select class="campo" id="areaConhecimento" name="areaConhecimento" type="text"
                             th:value="*{areaConhecimento}">
                             <option value="" selected th:text="#{cadastro.selecioneProfissional}"></option>
@@ -26,30 +28,34 @@
                             <option value="psicologia" th:text="#{cadastro.psicologia}"></option>
                         </select>
                     </div>
-                    <input type="text" id="qualificacao" class="campo" name="qualificacao" style="width: 350px;" th:placeholder="#{index.qualificacao}" th:value="*{qualificacao}"/>
+                    <input type="text" id="qualificacao" class="campo" name="qualificacao" style="width: 350px;"
+                        th:placeholder="#{index.qualificacao}" th:value="*{qualificacao}" />
                     <input type="submit" id="submit" class="botao-filtrar" th:value="#{index.filtro}" />
                 </form>
-                <div th:insert="components/listaPacotes.html"></div>
+                <div th:insert="components/listaProfissionais.html"></div>
             </div>
         </main>
     </div>
 
     <script type="text/javascript">
         const select = document.getElementById('areaConhecimento');
-
-select.addEventListener('change', function handleChange(event) {
-   console.log(event.target.value); // 👉️ get selected VALUE
-   const valueSelect = event.target.value;
-   const inputQualificacao = document.getElementById('qualificacao');
-   if (!valueSelect) {
-    inputQualificacao.disabled = true;
-   }
-   else {
-    inputQualificacao.disabled = false;
-   }
-   
-   console.log(inputQualificacao)
-});
+        const inputQualificacao = document.getElementById('qualificacao');
+        if (!select.value) {
+            inputQualificacao.disabled = true;
+        }
+        else {
+            inputQualificacao.disabled = false;
+        }
+        select.addEventListener('change', function handleChange(event) {
+            const valueSelect = event.target.value;
+            if (!valueSelect) {
+                inputQualificacao.disabled = true;
+            }
+            else {
+                inputQualificacao.disabled = false;
+            }
+        });
     </script>
 </body>
+
 </html>

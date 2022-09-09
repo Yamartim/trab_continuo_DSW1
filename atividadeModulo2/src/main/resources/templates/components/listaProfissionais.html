@@ -1,0 +1,12 @@
+<div class="lista-profissionais">
+    <div th:each="profissional: ${listaProfissionais}">
+        <div class="profissional">
+            <div class="profissional-content">
+                <div class="profissional-dados">
+                    <strong th:text="${profissional.areaConhecimento}"></strong>
+                    <span th:text="${profissional.qualificacao}"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
