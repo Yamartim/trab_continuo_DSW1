@@ -1,33 +1,43 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="#{login.title}"> | Excellent Voyage</title>
-    <link rel="stylesheet" th:href="@{/styles/global.css}" />
-    <link rel="stylesheet" th:href="@{styles/login.css}" />
-    <!-- script para get usuario logado-->
-
+	<title>Login</title>
+	<link rel="stylesheet" th:href="@{/css/login.css}" />
 </head>
-<body>
 
-    <div class="login-container box">
-        <a class="botao-voltar" href="javascript:history.go(-1)"><img th:src="@{/image/icons/arrow-left.svg}" /><p th:text="#{cadastro.voltar}"><p></a>
-        <span class="logo">LIFE CARE</span>
-      
-        <form class="form-login" th:action="@{/login}" method="POST">
-            <div th:if="${param.error}">
-				<div class="form-erro">
-					<span th:text="#{login.error}"></span>
+<body>
+	<header>
+		<div class="header-content">
+			<a class="home" th:href="@{/}"> &laquo; Home</a>
+			<h1>Login</h1>
+		</div>
+	</header>
+
+	<div style="margin-top: 100px;">
+		<div align="center" th:if="${param.error}">
+			<span style="color:red" th:text="#{login.error}"></span>
+		</div>
+
+		<form th:action="@{/login}" method="post">
+			<div class="container">
+				<div class="content">
+					<div class="">
+						<label class="margin" for="username" th:text="#{user.label}"></label><br><input type="text"
+							id="username" name="username" class="input" autofocus="autofocus"><br>
+						<label class="margin" for="senha" th:text="#{senha.label}"></label><br><input type="password"
+							id="password" name="password" class="input"><br><br>
+					</div>
+					<div style="text-align: center;">
+						<div>
+							<input type="submit" name="login-submit" id="login-submit" class="btn">
+						</div>
+					</div>
 				</div>
 			</div>
-            <h1 th:text="#{login.title}"> </h1>
-            <input type="text" id="username" name="username" class="campo" th:placeholder="#{login.email}"/>
-            <input type="password" id="password" name="password" class="campo" th:placeholder="#{login.senha}" />
-            <input type="submit" id ="login-submit" name="login-submit" th:value="#{login.botao}"/>
-            <a th:href="@{/cadastro}" th:text="#{cadastro.title}"></a>
-        </form>
-    </div>
+		</form>
+	</div>
 
 </body>
+
 </html>
