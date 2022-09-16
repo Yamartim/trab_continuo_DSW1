@@ -1,5 +1,7 @@
 package br.ufscar.dc.dsw.service.impl;
 
+import java.awt.*;
+import java.net.http.HttpHeaders;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,20 @@ public class ClientService implements IClientService {
 
 	@Autowired
 	ClientDAO dao;
-	
+
+	/*
+	@Override
+	public Long create(Cliente cliente) {
+		HttpHeaders headers = new HttpHeaders();
+		headers.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+		HttpEntity<Cliente> entity = new HttpEntity<Cliente>(cliente,headers);
+		String url = "http://localhost:8080/clientes";
+		ResponseEntity<Cliente> res = restTemplate.postForEntity(url, entity, Cliente.class);
+		Cliente c = res.getBody();
+
+		return c.getId();
+	} */
+
 	@Transactional(readOnly = true)
 	public Client buscarPorCpf(String cpf) {
 		return dao.findByCpf(cpf);
@@ -32,3 +47,4 @@ public class ClientService implements IClientService {
 		return dao.findAll();
 	}
 }
+

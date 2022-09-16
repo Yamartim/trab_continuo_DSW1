@@ -6,16 +6,15 @@ import java.util.HashSet;
 
 import javax.validation.Valid;
 
+import br.ufscar.dc.dsw.domain.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -35,7 +34,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import br.ufscar.dc.dsw.security.UsuarioDetails;
 
 @Controller
-@RequestMapping("/professionals")
+@RequestMapping("/profissionais")
 public class ProfessionalController {
 
     @Autowired
@@ -46,109 +45,111 @@ public class ProfessionalController {
 
     @GetMapping("/cadastrar")
 	public String cadastrar(Professional professional) {
-		return "profissional/cadastro";
+		return "profissionais/cadastro";
 	}
 
     @GetMapping("/listar")
-	public String listar(@RequestParam(required = false) String expertise, @RequestParam(required = false) String knowledgeArea, ModelMap model) {
+	public ResponseEntity<List<Professional>> listar(@RequestParam(required = false) String expertise, @RequestParam(required = false) String knowledgeArea, ModelMap model) {
 		List<Professional> professionals = professionalService.buscarTodos();
-		Set<String> expertiseHash = new HashSet<String>();
-
-        if (knowledgeArea != null && !knowledgeArea.isEmpty()) {
-			professionals = professionalService.buscarPorKnowledgeArea(knowledgeArea);
-            for (Professional professional : professionals) {
-                String expertiseAux = professional.getExpertise();
-                if (!expertiseHash.contains(expertiseAux)) {
-                    expertiseHash.add(expertiseAux);
-                }
-            }
-		}
-
-		if (expertise != null && !expertise.isEmpty()) {
-			professionals = professionalService.buscarPorExpertise(expertise);
-		}
-		
 		model.addAttribute("profissionais", professionals);
-		model.addAttribute("expertises", expertiseHash);
-		return "lista_profissionais";
+
+		return new ResponseEntity<List<Professional>>(professionals, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/listar/{id}")
+	public ResponseEntity listarid(@PathVariable Long id, ModelMap model) {
+		Professional professional = professionalService.buscarPorId(id);
+		model.addAttribute("profissionais", professional);
+
+
+		return new ResponseEntity(professional, HttpStatus.OK);
+
+	}
+
+	@GetMapping(value = "/listar/especialidades/{expertise}")
+	public ResponseEntity<List<Professional>> listarespec(@PathVariable String expertise, ModelMap model) {
+		List<Professional> professionalexp = professionalService.buscarPorExpertise(expertise);
+		model.addAttribute("profissionais", professionalexp);
+
+
+		return new ResponseEntity<List<Professional>>(professionalexp, HttpStatus.OK);
+
 	}
 
     @PostMapping("/salvar")
-	public String salvar(@Valid Professional professional, BindingResult result, RedirectAttributes attr, BCryptPasswordEncoder encoder, @RequestParam("file") MultipartFile file) throws IOException {
+	public String salvar(@RequestBody Professional professional, BindingResult result, RedirectAttributes attr, BCryptPasswordEncoder encoder) {
+		/*
 		String fileName = StringUtils.cleanPath(file.getOriginalFilename());
+
 		if (fileName == "") {
 			attr.addFlashAttribute("fail", "Nao foi possivel cadastrar, verifique os dados e tente novamente");
-			return "redirect:/professionals/listar";
+			return "redirect:/profissionais/listar";
 		}
 		professional.setQualifications(file.getBytes());
-		professional.setFilename(fileName);
+		professional.setFilename(fileName);*/
 
 		if (professional.getRole() == null) {
 			professional.setRole("PROF");
 		}
 
-		professional.setPassword(encoder.encode(professional.getPassword()));
+		if (result.hasErrors() || professional.getName() == "" || professional.getUsername() == "") {
+			attr.addFlashAttribute("fail", "Nao foi possivel cadastrar, verifique os dados e tente novamente");
+			return "redirect:/profissionais/listar";
+		}
+
+
 		try {
+
+			professional.setPassword(encoder.encode(professional.getPassword()));
 			userService.salvar(professional);
 			attr.addFlashAttribute("sucess", "Profissional inserido com sucesso");
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-			if(!authentication.getAuthorities().toString().equals("[ROLE_ANONYMOUS]")){
-				UsuarioDetails user = (UsuarioDetails)authentication.getPrincipal();
-				String role = user.getAuthorities().toString();
-
-				if(role.equals("[ADMIN]")){
-
-					return "redirect:/professionals/listar";
-				}
-			}
-
-			return "/login";
+			return "redirect:/profissionais/listar";
 
 		}
 		catch (Exception handlerException) {
 			attr.addFlashAttribute("fail", "Nao foi possivel cadastrar, verifique os dados e tente novamente");
-			return "redirect:/professionals/listar";
+			return "redirect:/profissionais/listar";
 		}
 
 	}
 
-    @GetMapping("/editar/{id}")
+    @PutMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("professional", userService.buscarPorId(id));
-		return "profissional/edicao";
+		return "profissionais/edicao";
 	}
 
-    @PostMapping("/editar")
-	public String editar(@Valid Professional professional, BindingResult result, RedirectAttributes attr,BCryptPasswordEncoder encoder, @RequestParam("file") MultipartFile file) throws IOException {
-		try {
-			String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-			professional.setQualifications(file.getBytes());
-			professional.setFilename(fileName);
-
+    @PutMapping("/editar")
+	public String editar(@RequestBody Professional professional, BindingResult result, RedirectAttributes attr,BCryptPasswordEncoder encoder){
 			if (professional.getRole() == null) {
 				professional.setRole("PROF");
 			}
 
-
-			professional.setPassword(encoder.encode(professional.getPassword()));
-			userService.salvar(professional);
-			attr.addFlashAttribute("sucess", "Profissional editado com sucesso.");
-			return "redirect:/professionals/listar";
-		}
-		catch (Exception handlerException) {
+			if (result.hasErrors() || professional.getName() == "" || professional.getUsername() == "") {
 			attr.addFlashAttribute("fail", "Nao foi possivel editar, verifique os dados e tente novamente");
-			return "redirect:/professionals/listar";
-		}
+			return "redirect:/profissionais/listar";
+			}
+
+			try {
+				professional.setPassword(encoder.encode(professional.getPassword()));
+				userService.salvar(professional);
+				attr.addFlashAttribute("sucess", "Profissional editado com sucesso.");
+				return "redirect:/profissionais/listar";
+			}
+			catch (Exception handlerException) {
+			attr.addFlashAttribute("fail", "Nao foi possivel editar, verifique os dados e tente novamente");
+			return "redirect:/profissionais/listar";
+			}
 	}
 
-    @GetMapping("/excluir/{id}")
+    @DeleteMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
         
 		userService.excluir(id);
 		attr.addFlashAttribute("sucess", "Profissional excluído com sucesso.");
 		
-		return "redirect:/professionals/listar";
+		return "redirect:/profissionais/listar";
 	}
 
 	@GetMapping(value = "/download/{id}")

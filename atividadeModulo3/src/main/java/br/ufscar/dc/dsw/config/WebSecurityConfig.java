@@ -37,20 +37,24 @@ protected void configure(AuthenticationManagerBuilder auth) throws Exception {
    auth.authenticationProvider(authenticationProvider());
 }
 
-@Override
-protected void configure(HttpSecurity http) throws Exception {
-   http.authorizeRequests()
-   		.antMatchers("/", "/index", "/error","/professionals/listar","/professionals/cadastrar","/professionals/salvar", "/clientes/cadastrar","/professionals/download/**", "/clientes/salvar").permitAll()
-   		.antMatchers("/login/**", "/js/**", "/css/**","/image/**", "/webjars/**").permitAll()
-		.antMatchers("/cliente/lista","/professionals/editar").hasAuthority("ADMIN")
-   		.anyRequest().authenticated()
-   	.and()
-   		.formLogin()
-   		.loginPage("/login")
-   		.permitAll()
-   	.and()
-   		.logout()
-   		.logoutSuccessUrl("/")
-   		.permitAll();
-}
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable().authorizeRequests()
+				// Controladores REST
+				.antMatchers("/clientes/listar", "/clientes/editar").permitAll()
+				.antMatchers("/clientes", "/profissionais", "/consultas").permitAll()
+				.antMatchers("/profissionais/listar", "/clientes/salvar").permitAll()
+				.antMatchers("/clientes/excluir/{\\d+}", "/profissionais/editar").permitAll()
+				.antMatchers("/clientes/listar/{\\d+}", "/profissionais/listar/{\\d+}").permitAll()
+				.antMatchers("/consultas/listar", "/profissionais/salvar").permitAll()
+				.antMatchers("/profissionais/listar/especialidades/{\\w+}", "/profissionais/excluir/{\\d+}").permitAll()
+				.antMatchers("/consultas/salvar", "/consulta/agendamento").permitAll()
+				.antMatchers("/consultas/profissionais/{\\d+}").permitAll()
+				// Demais linhas
+				.anyRequest().authenticated()
+				.and()
+				.formLogin().loginPage("/login").permitAll()
+				.and()
+				.logout().logoutSuccessUrl("/").permitAll();
+	}
 }

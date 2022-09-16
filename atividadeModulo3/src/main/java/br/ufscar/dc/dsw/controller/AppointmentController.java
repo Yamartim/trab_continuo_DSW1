@@ -9,7 +9,10 @@ import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
+import br.ufscar.dc.dsw.service.impl.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -53,17 +56,20 @@ public class AppointmentController {
 	private AppointmentService appointmentService;
 	
 	@Autowired
-	private IClientService clientService;
+	private IClientService cltService;
 	@Autowired
 	private IProfessionalService profService;
 	
 	@Autowired
 	private ProfessionalService professionalService;
 
+	@Autowired
+	private ClientService clientService;
+
 	private Client getClientAutenticado() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		UsuarioDetails user = (UsuarioDetails)authentication.getPrincipal();
-		return clientService.buscarPorId(user.getId());
+		return cltService.buscarPorId(user.getId());
 	}
 
 	private Professional getProfAutenticado() {
@@ -115,15 +121,23 @@ public class AppointmentController {
 		return false;
 	}
 	
-	@GetMapping("/listarClient")
-	public String listarClient(@RequestParam(required = false) String c, ModelMap model) {
-		Client client = getClientAutenticado();
+	@GetMapping("/listar")
+	public ResponseEntity<List<Appointment>> listar(String c, ModelMap model) {
+		List<Appointment> appointments = appointmentService1.buscarTodosPorUsuario();
+
+		ResponseEntity<List<Appointment>> listResponseEntity = new ResponseEntity<>(appointments, HttpStatus.OK);
+		return listResponseEntity;
+
+	}
+
+	/*@GetMapping("/listarCliente/{id}")
+	public ResponseEntity<List<Appointment>> listarClient(@RequestParam(required = false) String c, ModelMap model) {
+		List<Client> clients = (List<Client>) getClientAutenticado();
 		List<Appointment> appointments = appointmentService1.buscarPorIdCliente(client);
 
 		model.addAttribute("consultas", appointments);
 		return "consulta/lista";
-	}
-	
+	}*/
 	@GetMapping("/listarProf")
 	public String listarProf(@RequestParam(required = false) String c, ModelMap model) {
 		Professional prof = getProfAutenticado();
@@ -140,13 +154,13 @@ public class AppointmentController {
 		return "consulta/agendamento";
 	}
 
-	
 	@PostMapping("/salvar")
-	public String salvar(@Valid Appointment appointment, BindingResult result, RedirectAttributes attr, Long idProfessional) {
+	public String salvar(@RequestBody Appointment appointment, BindingResult result, RedirectAttributes attr, Long idProfessional) {
 		if (appointment.getDateAppointment() == "") {
 			attr.addFlashAttribute("fail", "Não foi possível agendar a consulta.");
 			return "redirect:/professionals/listar";
 		}
+		idProfessional = appointment.getProfessional().getId();
 		Professional professional = professionalService.buscarPorId(idProfessional);
 		appointment.setProfessional(professional);
 		appointment.setClient(getClientAutenticado());
@@ -164,7 +178,6 @@ public class AppointmentController {
 		}
 
 	}
-
 	@GetMapping("/cancelar/{id}")
 	public String cancelar(@PathVariable("id") Long id, RedirectAttributes attr, ModelMap model) {
 		var appointment =  appointmentService1.buscarPorId(id);

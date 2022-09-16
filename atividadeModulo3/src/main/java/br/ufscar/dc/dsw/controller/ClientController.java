@@ -4,13 +4,12 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -29,26 +28,38 @@ public class ClientController {
 
 	@Autowired
 	private IClientService clientService;
-	
+
 	@Autowired 
 	private IUserService userService;
-	
+
 	@GetMapping("/cadastrar")
 	public String cadastrar(Client client) {
 
 		return "cliente/cadastro";
 	}
-	
+
 	@GetMapping("/listar")
-	public String listar(ModelMap model) {
+	public ResponseEntity<List<Client>> listar(ModelMap model) {
 		List<Client> clients = clientService.buscarTodos();
 		model.addAttribute("clientes", clients);
-		return "/cliente/lista";
-		
+
+
+		return new ResponseEntity<List<Client>>(clients, HttpStatus.OK);
+
 	}
-	
+
+	@GetMapping(value = "/listar/{id}")
+	public ResponseEntity listarid(@PathVariable Long id, ModelMap model) {
+		Client client = clientService.buscarPorId(id);
+		model.addAttribute("clientes", client);
+
+
+		return new ResponseEntity(client, HttpStatus.OK);
+
+	}
+
 	@PostMapping("/salvar")
-	public String salvar(@Valid Client client, BindingResult result, RedirectAttributes attr, BCryptPasswordEncoder encoder) {
+	public String salvar(@RequestBody  Client client, BindingResult result, RedirectAttributes attr, BCryptPasswordEncoder encoder) {
 
 		if (client.getRole() == null) {
 			client.setRole("CLIENT");
@@ -65,20 +76,7 @@ public class ClientController {
 			userService.salvar(client);
 			attr.addFlashAttribute("sucess", "Cliente inserido com sucesso.");
 
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-			if (!authentication.getAuthorities().toString().equals("[ROLE_ANONYMOUS]")) {
-				UsuarioDetails user = (UsuarioDetails) authentication.getPrincipal();
-				String role = user.getAuthorities().toString();
-
-				if (role.equals("[ADMIN]")) {
-
-					return "redirect:/clientes/listar";
-				}
-			}
-
-
-			return "/login";
+			return "redirect:/clientes/listar";
 		}
 		catch (Exception handlerException) {
 			attr.addFlashAttribute("fail", "Nao foi possivel cadastrar, verifique os dados e tente novamente");
@@ -86,8 +84,8 @@ public class ClientController {
 		}
 	}
 	
-	@PostMapping("/editar")
-	public String editar(@Valid Client client, BindingResult result, RedirectAttributes attr, BCryptPasswordEncoder encoder) {
+	@PutMapping("/editar")
+	public String editar(@RequestBody Client client, BindingResult result, RedirectAttributes attr, BCryptPasswordEncoder encoder) {
 		if (client.getRole() == null) {
 			client.setRole("CLIENT");
 		}
@@ -108,14 +106,14 @@ public class ClientController {
 			return "redirect:/clientes/listar";
 		}
 	}
-	
-	@GetMapping("/editar/{id}")
+
+	@PutMapping("/editar/{id}")
 	public String preEditar(@PathVariable("id") Long id, ModelMap model) {
 		model.addAttribute("client", userService.buscarPorId(id));
 		return "cliente/edicao";
 	}
-	
-	@GetMapping("/excluir/{id}")
+
+	@DeleteMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
 		userService.excluir(id);
 		attr.addFlashAttribute("sucess", "Cliente excluído com sucesso.");
